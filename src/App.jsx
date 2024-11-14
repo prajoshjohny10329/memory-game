@@ -31,6 +31,7 @@ const levelClearedMsg = [
 
 
 function App() {
+   
 
   const currentGameLevel = parseInt(localStorage.gameLevel);
   const [pieces, setPieces] = useState([]);
@@ -127,7 +128,6 @@ function App() {
       <h1 className="animate-character"> Memory Game in React </h1>
       <div className="title">
         <h1> Level - {level} </h1>
-        <h1> Local Level - {currentGameLevel} </h1>
         <h2> Tries left - {lives} </h2>
       </div>
       <div className="container">
