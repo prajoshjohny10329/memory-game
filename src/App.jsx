@@ -29,9 +29,12 @@ const levelClearedMsg = [
   "🎉 Congratulations, you've conquered!",
 ];
 
+
 function App() {
-  const [pieces, setPices] = useState([]);
-  const [level, setLevel] = useState(1);
+
+  const currentGameLevel = parseInt(localStorage.gameLevel);
+  const [pieces, setPieces] = useState([]);
+  const [level, setLevel] = useState(currentGameLevel || 1);
   const [lives, setLives] = useState(null);
 
   let timeout = useRef();
@@ -62,10 +65,11 @@ function App() {
       });
       duplicateGameIcons.splice(randomIndex, 1);
     }
-    setPices(newGameIcons);
+    setPieces(newGameIcons);
   };
 
   useEffect(() => {
+    localStorage.setItem('gameLevel', level)
     startGame();
   }, [level]);
 
@@ -79,14 +83,14 @@ function App() {
       }
       return piece;
     });
-    setPices(newPieces);
+    setPieces(newPieces);
   };
 
   const gameLogicForFlipped = () => {
     const flippedData = pieces.filter((data) => data.flipped && !data.solved);
     if (flippedData.length === 2) {
       timeout.current = setTimeout(() => {
-        setPices(
+        setPieces(
           pieces.map((piece) => {
             if (
               piece.position === flippedData[0].position ||
@@ -120,17 +124,17 @@ function App() {
 
   return (
     <main>
-      <h1 className="animate-charcter"> Memory Game in React </h1>
+      <h1 className="animate-character"> Memory Game in React </h1>
       <div className="title">
         <h1> Level - {level} </h1>
+        <h1> Local Level - {currentGameLevel} </h1>
         <h2> Tries left - {lives} </h2>
       </div>
       <div className="container">
         {pieces.map((data, index) => (
           <div
-            className={`flip-card ${
-              data.flipped || data.solved ? "active" : ""
-            } `}
+            className={`flip-card ${data.flipped || data.solved ? "active" : ""
+              } `}
             key={index}
             onClick={() => handleActive(data)}
           >
@@ -145,20 +149,25 @@ function App() {
       {isGameCompleted && (
         <div className="game-completed">
           <h1> {levelClearedMsg[level - 1]} </h1>
-          {level === 10 ? (
-            <button onClick={restartGame}> Play Again </button>
-          ) : (
-            <button
-              onClick={() => {
-                setLevel(level + 1);
-              }}
-            >
-              Next Level
-            </button>
-          )}
+          {level === 10 || level >= 10 ?
+
+            (
+              <button onClick={restartGame}> Play Again </button>
+            ) :
+            (
+              <button
+                onClick={() => {
+                  setLevel(level + 1);
+
+                }}
+              >
+                Next Level
+              </button>
+            )}
           <Confetti width={window.innerWidth} height={window.innerHeight} />
         </div>
       )}
+
 
       {lives === 0 && !isGameCompleted && (
         <div className="game-completed">
