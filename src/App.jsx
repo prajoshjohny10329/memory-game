@@ -34,6 +34,7 @@ function App() {
    
 
   const currentGameLevel = parseInt(localStorage.gameLevel);
+  
   const [pieces, setPieces] = useState([]);
   const [level, setLevel] = useState(currentGameLevel || 1);
   const [lives, setLives] = useState(null);
