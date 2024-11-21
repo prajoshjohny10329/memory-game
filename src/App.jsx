@@ -29,12 +29,10 @@ const levelClearedMsg = [
   "🎉 Congratulations, you've conquered!",
 ];
 
-
 function App() {
-   
-
-  const currentGameLevel = parseInt(localStorage.gameLevel);
   
+  const currentGameLevel = parseInt(localStorage.getItem("gameLevel"));
+
   const [pieces, setPieces] = useState([]);
   const [level, setLevel] = useState(currentGameLevel || 1);
   const [lives, setLives] = useState(null);
@@ -71,7 +69,7 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem('gameLevel', level)
+    localStorage.setItem("gameLevel", level);
     startGame();
   }, [level]);
 
@@ -134,8 +132,9 @@ function App() {
       <div className="container">
         {pieces.map((data, index) => (
           <div
-            className={`flip-card ${data.flipped || data.solved ? "active" : ""
-              } `}
+            className={`flip-card ${
+              data.flipped || data.solved ? "active" : ""
+            } `}
             key={index}
             onClick={() => handleActive(data)}
           >
@@ -150,25 +149,20 @@ function App() {
       {isGameCompleted && (
         <div className="game-completed">
           <h1> {levelClearedMsg[level - 1]} </h1>
-          {level === 10 || level >= 10 ?
-
-            (
-              <button onClick={restartGame}> Play Again </button>
-            ) :
-            (
-              <button
-                onClick={() => {
-                  setLevel(level + 1);
-
-                }}
-              >
-                Next Level
-              </button>
-            )}
+          {level === 10 || level >= 10 ? (
+            <button onClick={restartGame}> Play Again </button>
+          ) : (
+            <button
+              onClick={() => {
+                setLevel(level + 1);
+              }}
+            >
+              Next Level
+            </button>
+          )}
           <Confetti width={window.innerWidth} height={window.innerHeight} />
         </div>
       )}
-
 
       {lives === 0 && !isGameCompleted && (
         <div className="game-completed">
