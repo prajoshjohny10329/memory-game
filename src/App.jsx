@@ -32,8 +32,7 @@ const levelClearedMsg = [
 
 function App() {
    
-
-  const currentGameLevel = parseInt(localStorage.gameLevel);
+  const currentGameLevel = parseInt(localStorage.getItem("gameLevel"));
   const [pieces, setPieces] = useState([]);
   const [level, setLevel] = useState(currentGameLevel || 1);
   const [lives, setLives] = useState(null);
